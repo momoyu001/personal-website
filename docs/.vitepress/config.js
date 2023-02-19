@@ -9,7 +9,7 @@ export default {
             { text: '数据结构和算法', link: '/algorithm/' },
             { text: 'JavaScript', link: '/javascript/' },
             { text: 'Vue', link: '/vue/' },
-            { text: 'React', link: '' },
+            { text: 'React', link: '/react/' },
             { text: '源码', link: '' },
             { text: '日常随笔', link: '' },
             { text: '其他', link: '' },
@@ -51,6 +51,12 @@ export default {
                         { text: 'vue3 学习笔记', link: '/vue/vue3学习笔记' },
                         { text: 'vue-class-component', link: '/vue/vueClassComponent' },
                     ],
+                },
+            ],
+            '/react/': [
+                {
+                    text: 'React',
+                    items: [],
                 },
             ],
         },
