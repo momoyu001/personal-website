@@ -299,8 +299,6 @@ https://github.com/shengxinjing/vue3-vs-vue2.git
 
 一个简单的响应式模型，我们可以通过reactive或者ref函数，把数据包构成响应式对象，并且通过effect函数注册回调函数，然后在数据修改之后，响应式的通知effect去执行回调函即可。
 
-![get和set]("./img/getAndSet.webp")
-
 ## track
 
 track函数：targetMap去存储依赖关系。map的key是我们要代理的target对象呢，值还是一个depsMap。存储着每一个ky依赖的函数，每一个key都可以依赖多个effect。

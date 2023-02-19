@@ -164,7 +164,7 @@ console.log(count.value, double);
 
 ### 响应式实现原理的总结
 
-![总结]("./img/响应式.png")
+![总结](../img/响应式.png)
 
 ## 定制响应式数据
 

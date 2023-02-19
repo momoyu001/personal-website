@@ -23,7 +23,7 @@
 
 * 栗子 - 图片懒加载，在img标签之上加上v-lazy的属性；聚焦指令
 
-```
+```js
     app.directive('focus', {
         // 当被绑定的元素挂载到DOM中时
         moumted(el) {
@@ -36,7 +36,7 @@
 
 * 指令的生命周期和组件的类似。指令要支持vue的插件机制，所以需要install方法
 
-```
+```js
     const lazyPlugin = {
         install(app, options) {
             app.directive('lazy', {
@@ -50,7 +50,7 @@
 
 * v-loading指令的实现
 
-```
+```js
     const loadingDirective = {
         mounted: function (el, binding, vnode) {
             const mask = createComponent(Loading, {
@@ -83,7 +83,6 @@
         unmounted: function () {
             el.instance && el.instance.close()
         }
-
     }
 
     export default {
@@ -91,7 +90,6 @@
             // if (Vue.prototype.$isServer) return
             app.directive('loading', loadingDirective)
         }
-
     }
  
 ```
@@ -144,11 +142,8 @@
     npm run build 打包，根目录下的stat.html文件，打开后可以看到分析报告
  
 ```
-
     
-
 ```
-
     webpack项目中；
     npm install webpack-bundle-analyzer
  
@@ -160,7 +155,7 @@
 
 * 栗子
 
-```
+```js
     function fib(n){
         if(n<=1) return 1
         return fib(n-1)+fib(n-2)
@@ -170,9 +165,7 @@
  
 ```
 
-    
-
-```
+```js
     function fib(n){
         let arr = [1, 1]
         let i = 2
@@ -228,8 +221,6 @@
 
 * 只渲染可视区域内的DOM元素，避免因为页面中DOM元素过多，而引起的卡顿问题。
 
-
-
 # 加餐 - TypeScript
 
 ## TypeScript入门
@@ -243,50 +234,40 @@
     - `?`可设置 为可选属性
 * 函数的类型限制
 
-    
-
 ```
     // 大致语法
     function 函数名(参数: 参数类型): 返回值类型 {}
- 
 ```
 
 * 使用变量的方式去定义函数 - （可读性稍微差点）
 
-```
+```ts
     // 大致语法
-    (参数类型) => 返回值类型
+    // (参数类型) => 返回值类型
     let add1: (a: number, b: number) => number = function(x: number, y: number) {
         return x + y;
-
     }
 
     // 使用type关键字去定义函数的类型
     type addType = (a: number, b: number) => number
     let add2:addType = function(x: number, y:number) {
         return x+ y
-
     }
 
     // 使用interface关键字去定义函数类型
     interface addType1 {
         (a: number, b: number): number
-
     }
 
     let add3:addType2 = function(x: number, y: number) {
         return x + y;
-
     }
  
 ```
 
 * 函数重载 - 函数支持多个类型的参数  --  [vue3源码](https://github.com/vuejs/vue-next/blob/master/packages/reactivity/src/ref.ts#L72)
 
-    
-
-```
-
+```ts
     // 要求。参数是数字，返回的是数字；参数是字符串，返回的是字符串
     function reverse(x: number): number
     function reverse(x: string): string
@@ -296,7 +277,6 @@
         } else if (typeof x === 'number') {
             return Number(x.toString().split('').reverse().join()); 
         }
-
     }
  
 ```
@@ -306,11 +286,9 @@
     - HTMLElement ：dom元素类型
     - NodeList ：节点列表类型
     - MouseEvent ：鼠标点击事件类型
-
     
 
-```
-
+```js
     // window对象
     let w: Window = window; 
     // dom元素
@@ -328,34 +306,29 @@
 
 * 一些第三方框架的数据类型
 
-    
-
-```
+```ts
 
     import { ref, Ref } from 'vue';
 
     interface Todo {
         title: string,
         done: boolean
-
     }
 
     let todos: Ref = ref([{ title: '学习Vue', done: false }])
- 
 ```
+
 
 ## 泛型
 
 TypeScript可以进行类型编程，极大提高TypeScript在复杂场景下的应用场景
 
 * 栗子：返回值的类型和参数的类型一致。
-
     
-```
+```ts
     // T 相当于给函数定义了一个类型变量， 【type T = arg的类型】
     function identity<T>(arg: T): T {
         return arg
-
     }
 
     // 此时的T是string，返回值的类型也是string
@@ -366,12 +339,10 @@ TypeScript可以进行类型编程，极大提高TypeScript在复杂场景下的
 
 * 利用泛型，把函数参数定义成类型
 
-```
-
+```ts
     interface VueCourse5 {
         name: string,
         price: number
-
     }
 
     // 只能是name和price中选一个 --- 使用了 keyof 语法，获得已知类型VueCourse5的属性列表
@@ -384,10 +355,7 @@ TypeScript可以进行类型编程，极大提高TypeScript在复杂场景下的
 * `keyof`：可以用来拆解已有类型
 * `extends`：实现类型系统中的条件判定 -- `T extends U ? X : Y` -- 类型三元表达式
 
-    
-
-```
-
+```ts
     // 定义ExtendsType函数，接收泛型参数T，通过判断T是不是布尔值，来返回不同类型的字符串。实现通过传入不同的参数来返回不同的类型
     type ExtendsType<T> = T extends boolean ? '重学前端' : '玩转Vue3全家桶'
     type ExtendsType1 = ExtendsType<boolean> // type ExtendsType1 = '重学前端'
@@ -397,36 +365,32 @@ TypeScript可以进行类型编程，极大提高TypeScript在复杂场景下的
 
 * `in`：实现遍历
 
-```
-
+```ts
     type Course = '玩转Vue3全家桶' | '重学前端'
     type CourseObj = {
         [k in Course]: number // 遍历Course类型作为key
-
     }
 
     // 等同于
     type Course = {
         '玩转Vue3全家桶': number, 
         '重学前端': number
-
     }
  
 ```
 
+
 * 栗子
 
-```
+```ts
     // K extends keyof T  // 限制K的类型必须是T的属性之一
     functiongetProperty<T, K extends keyof T>(o: T, name: K): T[K] {
         return o[name]
-
     }
 
     const coursePrice:CourseObj = {
         '玩转Vue3': 129,
         '重学前端': 129
-
     }
 
     getProperty(coursePrice, '玩转Vue3')；
@@ -435,18 +399,14 @@ TypeScript可以进行类型编程，极大提高TypeScript在复杂场景下的
  
 ```
 
-* `infer`：**<T>**可以给函数参数定义类型变量，**infer**则可以在**extends**关键字之后的变量设置类型变量，更加细致的控制类型。**不是很理解？？？**
+* `infer`：**`<T>`**可以给函数参数定义类型变量，**infer**则可以在**extends**关键字之后的变量设置类型变量，更加细致的控制类型。**不是很理解？？？**
 
-    
-
-```
-
+```ts
     type Foo = () => CourseObj
 
     // 如果T是一个函数，并且函数返回类型是P就返回P - infer P
     type ReturnType1<T> = T extends () => infer P ? P: never
     type Foo1 = ReturnType1<Foo>
- 
 ```
 
 ## 实战练习

@@ -300,7 +300,7 @@
   - beforeUpdate：（发生在虚拟DOM打补丁之前）当执行到这个钩子的时候，页面中显示的数据还是旧的，此时data中的数据是新的，只是页面还没有和最新的数据保持同步
   - beforeDestory：Vue进入到了销毁阶段，此时，实例身上的所有data、methods、过滤器、指令等，都处于可用的状态
   - destoryed：实例身上的所有data、methods、过滤器、指令等，都不可用的
-  - ![1.png](./img/image-20220727215507647.png1.awebp)
+  - ![1.png](./img/image-20220727215507647.png)
   - ssr中：beforeCreated和created之外的生命周期不能使用（服务端渲染和前端渲染的区别：服务端渲染没有实际的dom结构）
 
 - v-for和v-if的优先级

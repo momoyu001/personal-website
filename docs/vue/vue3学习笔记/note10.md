@@ -16,8 +16,6 @@ baseCreateRenderer 是学习Vue源码最复杂的一个函数。
 
 nodeOps传递进来的 -- 平台上所有的insert、remove函数；vue更新、渲染的函数。
 
-![createApp]('./../img/createAPP.webp')
-
 * createApp -- 就是createAppAPI(render, hudrate)
     - createAppAPI方法：
         - 内部创建了app对象
