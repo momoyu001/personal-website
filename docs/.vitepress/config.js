@@ -7,7 +7,7 @@ export default {
             // 链接的路径设置为不带 .md 前缀的实际文件，并始终以 / 开头。
             { text: '面试', link: '/interview/company' },
             { text: '数据结构和算法', link: '/algorithm/note' },
-            { text: 'JavaScript', link: '' },
+            { text: 'JavaScript', link: '/javascript/' },
             { text: 'Vue', link: '' },
             { text: 'React', link: '' },
             { text: '源码', link: '' },
@@ -30,6 +30,17 @@ export default {
                     items: [
                         { text: '算法笔记', link: '/algorithm/note' },
                         { text: '数据结构和算法专栏笔记', link: '/algorithm/introduction' },
+                    ],
+                },
+            ],
+            '/javascript/': [
+                {
+                    text: 'JavaScript',
+                    items: [
+                        { text: 'JS 笔记', link: '/javascript/JS笔记' },
+                        { text: 'JS 手写题', link: '/javascript/JS手写题' },
+                        { text: 'Proxy&Reflect&装饰器', link: '/javascript/Proxy&Reflect&装饰器' },
+                        { text: 'TypeScript', link: '/javascript/typescript' },
                     ],
                 },
             ],
