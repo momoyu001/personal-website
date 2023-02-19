@@ -300,7 +300,7 @@
   - beforeUpdate：（发生在虚拟DOM打补丁之前）当执行到这个钩子的时候，页面中显示的数据还是旧的，此时data中的数据是新的，只是页面还没有和最新的数据保持同步
   - beforeDestory：Vue进入到了销毁阶段，此时，实例身上的所有data、methods、过滤器、指令等，都处于可用的状态
   - destoryed：实例身上的所有data、methods、过滤器、指令等，都不可用的
-  - ![1.png](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/8/19/16ca74f183827f46~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp)
+  - ![1.png](./img/image-20220727215507647.png1.awebp)
   - ssr中：beforeCreated和created之外的生命周期不能使用（服务端渲染和前端渲染的区别：服务端渲染没有实际的dom结构）
 
 - v-for和v-if的优先级
@@ -1665,11 +1665,11 @@
   - 将进行懒加载的*引入语句*放到一个函数内部，然后再需要懒加载的时候执行该函数，这样就可以实现懒加载
 - watch和computed实现原理上的不同：
   - watch即this.$watch，是三种watcher中的一种 - **user-watcher**。
-    - ![image-20220727215507647](C:\Users\lx\AppData\Roaming\Typora\typora-user-images\image-20220727215507647.png)
+    - ![image-20220727215507647](./img/image-20220727215507647.png)
   - computed：不是API，但它是Watcher类的最后也是最复杂的一种实例化的使用。computed-watcher
-    - ![image-20220727220322397](C:\Users\lx\AppData\Roaming\Typora\typora-user-images\image-20220727220322397.png)
+    - ![image-20220727220322397](./img/image-20220727220322397.png)
   - 为什么计算属性会有缓存的功能：因为当计算属性结果计算之后，内部的标志位会表明已经计算过了，再次访问时会直接读取计算后的值。当计算属性内部的响应式数据发生变更时，这些响应式数据会收集computed-watcher，变更后通知计算属性要进行计算，也会通知页面重新渲染，渲染时会读取到重新计算后的值。
-  - ![image-20220727221432598](C:\Users\lx\AppData\Roaming\Typora\typora-user-images\image-20220727221432598.png)
+  - ![image-20220727221432598](./img/image-20220727221432598.png)
 
 
 

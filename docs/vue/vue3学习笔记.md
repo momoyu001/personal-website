@@ -1141,7 +1141,7 @@ Object.entries([...document.querySelectorAll("*")].map(n => n.tagName).reduce((p
     - 栗子
 
 ```
-< script >
+<script>
 render() {
     return h('h1', {}, 'Some title')
 }
@@ -1156,8 +1156,8 @@ h('div', {}, [
 
 function addCount() {
     count.value++;
-} <
-/script>
+} 
+</script>
 ```
 
 * template是vue3的默认写法，Vue会把`<template>`解析为`render`函数，之后，组件运行的时候，通过render函数去返回虚拟DOM。`除了写template，在某些场景下，我们可以直接写render函数来实现组件。`
@@ -1217,7 +1217,6 @@ export default defineComponent({
         function addCount() {
             count.value++; 
         }
-        </script>
 ```
 
   + 配置
@@ -1333,9 +1332,7 @@ function addCount() {
 
 * 使用：lang="ts" 标记当前组件使用TypeScript
 
-```
-
-    <script lang="ts"></script>
+```js
     import { computed, reactive, ref, defineProps, defineEmits } from '@vue/runtime-core';
 
     interface 极客时间课程 {
@@ -1851,9 +1848,7 @@ TypeScript可以进行类型编程，极大提高TypeScript在复杂场景下的
 * 栗子：返回值的类型和参数的类型一致。
 
     
-
 ```
-
     // T 相当于给函数定义了一个类型变量， 【type T = arg的类型】
     function identity<T>(arg: T): T {
         return arg
@@ -2025,7 +2020,6 @@ vite + TypeScript + Sass + ESLint
         function addCount() {
             count.value++; 
         }
-        </script>
 ```
 
 ### 布局组件
@@ -2294,8 +2288,8 @@ targetMap = {
 
 }
 
-```track.js
-
+```js
+// track.js
 const targetMap = new WeakMap()
 
 export function track(target, type, key) {
