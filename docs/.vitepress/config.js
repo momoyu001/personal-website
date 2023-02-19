@@ -12,7 +12,7 @@ export default {
             { text: 'React', link: '/react/' },
             { text: '源码', link: '/sourcecode/' },
             { text: '日常随笔', link: '/daily/' },
-            { text: '其他', link: '' },
+            { text: '其他', link: '/other/' },
         ],
         sidebar: {
             '/interview/': [
@@ -61,6 +61,7 @@ export default {
             ],
             '/sourcecode/': [{ text: '源码', items: [] }],
             '/daily/': [{ text: '日常随笔', items: [] }],
+            '/other/': [{ text: '其他', items: [] }],
         },
     },
 };
