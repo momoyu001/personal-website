@@ -10,7 +10,7 @@ export default {
             { text: 'JavaScript', link: '/javascript/' },
             { text: 'Vue', link: '/vue/' },
             { text: 'React', link: '/react/' },
-            { text: '源码', link: '' },
+            { text: '源码', link: '/sourcecode/' },
             { text: '日常随笔', link: '' },
             { text: '其他', link: '' },
         ],
@@ -59,6 +59,7 @@ export default {
                     items: [],
                 },
             ],
+            '/sourcecode/': [{ text: '源码', items: [] }],
         },
     },
 };
