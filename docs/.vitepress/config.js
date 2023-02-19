@@ -8,7 +8,7 @@ export default {
             { text: '面试', link: '/interview/' },
             { text: '数据结构和算法', link: '/algorithm/' },
             { text: 'JavaScript', link: '/javascript/' },
-            { text: 'Vue', link: '' },
+            { text: 'Vue', link: '/vue/' },
             { text: 'React', link: '' },
             { text: '源码', link: '' },
             { text: '日常随笔', link: '' },
@@ -41,6 +41,15 @@ export default {
                         { text: 'JS 手写题', link: '/javascript/JS手写题' },
                         { text: 'Proxy&Reflect&装饰器', link: '/javascript/Proxy&Reflect&装饰器' },
                         { text: 'TypeScript', link: '/javascript/typescript' },
+                    ],
+                },
+            ],
+            '/vue/': [
+                {
+                    text: 'Vue',
+                    items: [
+                        { text: 'vue3 学习笔记', link: '/vue/vue3学习笔记' },
+                        { text: 'vue-class-component', link: '/vue/vueClassComponent' },
                     ],
                 },
             ],
