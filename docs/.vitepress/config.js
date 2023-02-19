@@ -11,7 +11,7 @@ export default {
             { text: 'Vue', link: '/vue/' },
             { text: 'React', link: '/react/' },
             { text: '源码', link: '/sourcecode/' },
-            { text: '日常随笔', link: '' },
+            { text: '日常随笔', link: '/daily/' },
             { text: '其他', link: '' },
         ],
         sidebar: {
@@ -60,6 +60,7 @@ export default {
                 },
             ],
             '/sourcecode/': [{ text: '源码', items: [] }],
+            '/daily/': [{ text: '日常随笔', items: [] }],
         },
     },
 };
