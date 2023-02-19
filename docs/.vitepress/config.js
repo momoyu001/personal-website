@@ -48,7 +48,24 @@ export default {
                 {
                     text: 'Vue',
                     items: [
-                        { text: 'vue3 学习笔记', link: '/vue/vue3学习笔记' },
+                        {
+                            text: 'vue3 学习笔记',
+                            collapsible: true,
+                            collapsed: true,
+                            items: [
+                                { text: '笔记一', link: '/vue/vue3学习笔记/note1' },
+                                { text: '笔记二', link: '/vue/vue3学习笔记/note2' },
+                                { text: '笔记三', link: '/vue/vue3学习笔记/note3' },
+                                { text: '笔记四', link: '/vue/vue3学习笔记/note4' },
+                                { text: '笔记五', link: '/vue/vue3学习笔记/note5' },
+                                { text: '笔记六', link: '/vue/vue3学习笔记/note6' },
+                                { text: '笔记七', link: '/vue/vue3学习笔记/note7' },
+                                { text: '笔记八', link: '/vue/vue3学习笔记/note8' },
+                                { text: '笔记九', link: '/vue/vue3学习笔记/note9' },
+                                { text: '笔记十', link: '/vue/vue3学习笔记/note10' },
+                                { text: '笔记十一', link: '/vue/vue3学习笔记/note11' },
+                            ],
+                        },
                         { text: 'vue-class-component', link: '/vue/vueClassComponent' },
                     ],
                 },
