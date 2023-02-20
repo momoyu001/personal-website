@@ -78,7 +78,15 @@ export default {
             ],
             '/sourcecode/': [{ text: '源码', items: [] }],
             '/daily/': [{ text: '日常随笔', items: [] }],
-            '/other/': [{ text: '其他', items: [{ text: 'webpack', link: '/other/webpack' }] }],
+            '/other/': [
+                {
+                    text: '其他',
+                    items: [
+                        { text: 'webpack', link: '/other/webpack' },
+                        { text: 'git', link: '/other/git' },
+                    ],
+                },
+            ],
         },
     },
 };
