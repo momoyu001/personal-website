@@ -84,6 +84,8 @@ export default {
                     items: [
                         { text: 'webpack', link: '/other/webpack' },
                         { text: 'git', link: '/other/git' },
+                        { text: 'github-actions', link: '/other/github-actions' },
+                        { text: 'YAML', link: '/other/YAML' },
                     ],
                 },
             ],
