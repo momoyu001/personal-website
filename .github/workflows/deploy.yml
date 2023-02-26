@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node#v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: 16
                   cache: yarn
@@ -23,4 +23,4 @@ jobs:
               uses: peaceiris/actions-gh-pages@v3
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  pulish_dir: docs/.vitepress/dist
+                  publish_dir: docs/.vitepress/dist
