@@ -1,6 +1,7 @@
 export default {
     title: 'VitePress',
     description: 'Just playing around.',
+    base: '/personal-website/',
     themeConfig: {
         siteTitle: 'momoyu', // false 不展示左上角的网站标题；也可自定义网站标题；不配置该项时，会默认采用 config.title 的值
         nav: [
