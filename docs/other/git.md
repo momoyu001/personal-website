@@ -640,3 +640,137 @@ git remote -v
 
 **git revert**:
 
+
+# Git与Github的简单同步
+
+添加远端：`git remote add <自己的命名(例如：github)> <远端地址>`
+
+push代码：`git push github --all`，`git push github <某一个具体的分支名>`
+
+--all ： 所有的分支，只提交某一分支的时候，为具体的分支名
+
+```
+// 拉取远端最新的代码
+git fetch <远端>
+
+// 先拉取远端最新的代码，然后把远端和本地，关联的分支做一个merge
+git pull
+```
+
+当本地仓库的远端不止一个的时候，需要在git fetch 或者 git pull 或者 git push后面加上对应的远端名称
+
+
+
+*注意*：
+
+`git remote add`，是在本地已经是git仓库的情况下使用，若是先创建了远程仓库，git clone到本地之后，再开始写代码，不需要手动进行本地仓库和远端的连接。
+
+
+
+**fast forward**:
+
+举个例子：本地分支往远端分支push的时候，如果远端分支不是本地分支的祖先，那么它们就不是`fast forward`，反之它们就是`fast forward`。
+
+远程分支如果不是本地分支的`fast forward`，push的时候就会报错提示。
+
+当出现了不是`fast forward`的情况，两种解决方式：`git merge`，`git rebase`
+
+​	*git merge*:
+
+```
+可以先查看文档
+git merge -h
+
+合并远端的master分支（前面的操作，把远端命名为了github）
+git merge --allow-unrelated-gistories github/master
+```
+
+​	*git rebase*:
+
+```
+先把远端的分支fetch到本地
+git fetch
+
+git pull --rebase
+```
+
+
+
+**SSH**:
+
+
+
+# Git多人单分支集成协作的常用场景
+
+```
+git push
+切换分支之前指定远端的分支，那么在提交的时候，直接git push是不会有问题的，默认是origin远端分支，可以不写后面的分支
+```
+
+```
+远端新建了分支，本地还没有这个分支，需要先更新本地的分支
+git fetch <自己定义的远端的名称>
+```
+
+```
+git branch -av
+可以看到各个分支上，commit的最新情况，比如[ahead 1, behind 1]表示，本地的分支，比远端分支多一个新的commit，少了一个其他人提交的commit，出现这种情况，可以使用 git merge合并对应的分支
+```
+
+```
+git pull
+先将远端的分支拉取下来，然后和本地对应的分支做一个合并。
+```
+
+```
+git pull === git fetch + git merge
+```
+
+```
+git merge / git rebase
+git merge	不会改变两个分支的已有版本历史，只会把两个分支合并后创建出一个新的commit出来
+git rebase	假设当前在 A 分支，要基于B分支做rebase，那么，先找到A和B最近的公共祖先C1，从C1到A之间所有的commit，都基于B重新生成新的commit，rebase通常会改变某个分支的历史。
+```
+
+```
+一人修改了文件内容，一人修改了文件名，不会产生冲突的根本原因是，git存放blob文件时，是以文件内容来区分的，并不以文件名来区分。
+```
+
+```
+两个人同时改了一个文件的名称，会有冲突。
+```
+
+
+*注意*：
+
+我们本地是无法在远端分支上直接做出变更的，只能基于远端分支建立本地分支后，才能commit。
+
+
+
+# pulll request 和 merge request
+
+## pull request
+
+即**PR**。
+
+github上面，当自己想给其他的仓库贡献代码时，先 把别人的仓库`fork`一下到自己的仓库，自己用`fork`之后的仓库来修改并提交代码，开发完成之后给仓库owner提交`PR`合并请求，请求鄙人把自己的代码拉回去。
+
+## merge request
+
+即**MR**。
+
+gitlab上面，一般是公司的私有库，一个团队维护一个仓库，通常大家会新建自己的分支，开发完成之后，把代码合并到主分支上面。
+
+
+
+## 结论
+
+pull request 和 merge request其实差不多，只是在不同平台上的叫法有差异。
+
+
+
+# github认证
+
+github修改了认证方式，现在不再支持用户名&密码的方式认证，改成了个人token的方式，我们在执行git add, git commit, git push等操作的时候，会弹出一个弹窗要求输入用户名和密码，密码就是我们个人token，如何生成个人token，可以查看 [Git使用个人访问令牌提交代码到仓库_落丶寞的博客-CSDN博客_git 个人令牌](https://blog.csdn.net/weixin_44341110/article/details/120510816)。
+
+若没有弹出登录的弹窗，使用 `git credential-manager uninstall`命令，执行命令之后，再进行操作就会弹出。
