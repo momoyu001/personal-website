@@ -20,7 +20,17 @@ export default {
                 {
                     text: '面试',
                     items: [
-                        { text: '面试整理-按公司分类', link: '/interview/company' },
+                        {
+                            text: '面试整理-按公司分类',
+                            collapsible: true,
+                            collapsed: true,
+                            items: [
+                                { text: '笔记一', link: '/interview/company/company1' },
+                                { text: '笔记二', link: '/interview/company/company2' },
+                                { text: '笔记三', link: '/interview/company/company3' },
+                                { text: '笔记四', link: '/interview/company/company4' },
+                            ],
+                        },
                         { text: '面试整理-按模块分类', link: '/interview/module' },
                     ],
                 },
