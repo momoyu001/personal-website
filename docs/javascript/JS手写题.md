@@ -2,7 +2,7 @@
 
 ------
 
-**实现一个call函数**
+## **实现一个call函数**
 
 ```js
 /**
@@ -44,7 +44,7 @@ printName.myCall(obj);
 
 ------
 
-**实现一个apply函数**
+## **实现一个apply函数**
 
 ```js
 // 与call不同的是参数，参数为数组
@@ -86,7 +86,7 @@ printName.myApply(obj, [name1, age, grade]);
 
 ------
 
-**实现一个bind函数**
+## **实现一个bind函数**
 
 ```js
 /**
@@ -175,7 +175,7 @@ Object.prototype.myCreate1 = function(obj) {
 
 ------
 
-**实现new**
+## **实现new**
 
 ```js
 /**
@@ -211,7 +211,7 @@ console.log(obj1.name);
 
 ------
 
-**实现一个基本的promise**
+## **实现一个基本的promise**
 
 ```js
 /**
@@ -311,7 +311,7 @@ p.then(() => {
 
 ------
 
-**实现浅拷贝**
+## **实现浅拷贝**
 
 浅拷贝的实现方法：
 
@@ -354,7 +354,7 @@ console.log('修改类型为对象的属性之后', obj1, obj2);
 
 ------
 
-**实现一个基本的深拷贝**
+## **实现一个基本的深拷贝**
 
 ```js
 /**
@@ -462,7 +462,7 @@ console.log(c1.getName());
 
 ------
 
-**实现一个基本的Event Bus**
+## **实现一个基本的Event Bus**
 
 ```js
 /**
@@ -509,7 +509,7 @@ emit.emit('age');
 
 ------
 
-**实现一个双向数据绑定**
+## **实现一个双向数据绑定**
 
 ```js
 < div id = "app" >
@@ -548,7 +548,7 @@ document.getElementById('button').addEventListener('click', function(e) {
 
 ------
 
-**实现一个简单路由**
+## **实现一个简单路由**
 
 Vue的路由有两种模式： `hash模式` 和 `history模式`
 
@@ -595,7 +595,7 @@ class Route {
 
 ------
 
-**实现图片懒加载**
+## **实现图片懒加载**
 
 可视区域的高度： `window.innerHeight    document.documentElement.clientHeight    document.body.clientHeight`
 
@@ -633,7 +633,7 @@ app.addEventListener('scroll', eventFunc, false);
 
 ------
 
-**实现rem**
+## **实现rem**
 
 相对于html跟元素，实现的倍数放大或缩小
 
@@ -653,7 +653,7 @@ addEventListener('resize', setRem);
 
 ------
 
-**实现AJAX**
+## **实现AJAX**
 
 * XMLHttpRequest：
 
@@ -746,7 +746,7 @@ ajax(optionData);
 
 ------
 
-**实现拖拽**
+## **实现拖拽**
 
 * 针对一个绝对定位的元素
 
@@ -799,7 +799,7 @@ window.onload = function() {
 
 ------
 
-**实现一个节流函数**
+## **实现一个节流函数**
 
 ```js
 /**
@@ -831,7 +831,7 @@ setInterval(() => {
 
 ------
 
-**实现一个防抖函数**
+## **实现一个防抖函数**
 
 ```js
 function debounce(fn, time) {
@@ -867,7 +867,7 @@ let clear = setInterval(() => {
 
 ------
 
-**实现一个函数**
+## **实现一个函数**
 
 ```js
 // 需要实现的函数
@@ -902,7 +902,7 @@ repeatFunc('hello,world');
 
 ------
 
-**实现一个函数返回自身被调用的次数**
+## **实现一个函数返回自身被调用的次数**
 
 ```js
 function fn() {
