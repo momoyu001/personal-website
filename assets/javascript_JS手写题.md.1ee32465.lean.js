@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,d as l}from"./app.3caf6091.js";const i=JSON.parse('{"title":"JS手写题","description":"","frontmatter":{},"headers":[],"relativePath":"javascript/JS手写题.md"}'),p={name:"javascript/JS手写题.md"},o=l("",97),e=[o];function t(c,r,F,y,D,A){return a(),n("div",null,e)}const f=s(p,[["render",t]]);export{i as __pageData,f as default};
