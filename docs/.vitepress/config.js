@@ -78,6 +78,7 @@ export default {
                             ],
                         },
                         { text: 'vue-class-component', link: '/vue/vueClassComponent' },
+                        { text: 'vue是如何发布的', link: '/vue/vue是如何发布的' },
                     ],
                 },
             ],
