@@ -133,6 +133,9 @@ node releaseScripts/minimist.js -x 3 -y 4 -n5 -abc --beep=boop foo bar baz
 #   c: true,
 #   beep: 'boop'
 #  }
+
+node releaseScritps/minimist.js 3.2.4
+# 输出 解析出来的参数：{ _: ['3.2.4'] }
 ```
 
 minimist.js 文件中的 `process.argv` 的第一个和第二个元素是 `Node` 可执行文件和被执行 JavaScript 文件的完全限定的文件系统路径，无论你是否这样输入他们。
@@ -189,8 +192,12 @@ console.log(semver.eq('1.2.3', '1.2.3')); // 输出：true - 等于
 console.log(semver.satisfies('1.2.3', '>=1.0.0 <2.0.0')); // 输出：true
 console.log(semver.satisfies('2.0.0', '>=1.0.0 <2.0.0')); // 输出：false
 
+// 获取当前传入的版本的预发布标识
 console.log('1：', semver.prerelease('3.3.0-alpha.4')); // 输出：[ 'alpha', 4 ]
 console.log('2：', semver.prerelease('3.3.0-alpha.4')?.[0]) // 输出：alpha
+
+// 校验当前传入的版本号是否符合语义化版本规范
+semver.valid('1.2.3') // 1.2.3
 ```
 
 在控制台输入 `node releaseScripts/semver.js` 并运行可以看到相应的结果。
@@ -201,6 +208,9 @@ console.log('2：', semver.prerelease('3.3.0-alpha.4')?.[0]) // 输出：alpha
 
 `semver.satisfies` 方法用于判断一个版本号是否符合指定的版本范围，返回布尔值。
 
+`semver.prerelease` 方法用于返回当前版本号中的预发布标识。
+
+`semver.valid` 方法用于判断当前传入的版本号是否符合语义化版本规范。符合语义规范则返回版本号，不符合则返回 null。
 
 #### enquirer 交互式询问 CLI
 [enquirer](https://github.com/enquirer/enquirer)
@@ -293,7 +303,7 @@ const args = minimist(process.argv.slice(2)) // 解析脚本的命令行参数
 const preId = args.preid || semver.prerelease(currentVersion)?.[0] // 获取预发布版本的标识符，如果没有则返回 undefined
 
 // pnpm run release --dry
-const isDryRun = args.dry // 是否为干运行模式，即只输出操作日志而不实际执行操作
+const isDryRun = args.dry // 是否为空运行模式，即只输出操作日志而不实际执行操作
 
 // pnpm run release --skipTests
 let skipTests = args.skipTests // 是否跳过测试
@@ -394,3 +404,381 @@ const step = msg => console.log(chalk.cyan(msg))
 
 ## main 主流程
 
+```js
+async function main() {
+  // 校验、确认版本号
+
+  // 检查当前 Git 仓库的 最新提交记录是否通过了 CI 测试
+  step('Checking CI status for HEAD...')
+
+  // 执行测试用例
+  step('\nRunning tests...')
+  // or 跳过测试用例
+  step('Tests skipped.')
+
+  // 更新所有包的版本号（代码库中所有依赖其他代码库的依赖项）
+  step('\nUpdating cross dependencies...')
+
+  // 构建所有的包
+  step('\nBuilding all packages...')
+
+  // 生成 Vue3 代码库的变更日志
+  step('\nGenerating changelog...')
+
+  // 更新锁定文件已匹配项目中使用的确切版本的依赖项
+  step('\nUpdating lockfile...')
+
+  // 将代码库的更改提交到 Git 仓库中
+  step('\nCommitting changes...')
+
+  // 将更新后的代码库提交到 npm 或其他包管理器上
+  step('\nPublishing packages...')
+
+  // 将本地 Git 仓库中的修改推送到远程仓库中
+  step('\nPushing to GitHub...')
+
+}
+```
+### 第一步 - 版本校验，确认要发布的版本
+```js
+async function main() {
+  //获取版本号 - targetVersion。若运行 npm run release 3.3.1 ,则可获取到 3.3.1
+  let targetVersion = args._[0]
+
+  if (!targetVersion) {
+    // no explicit version, offer suggestions
+    // 若没有明确的指定版本号，提供交互式界面供用户选择
+    const { release } = await prompt({
+      type: 'select',
+      name: 'release',
+      message: 'Select release type',
+      // 可选项中使用 inc 方法来递增了一个版本
+      choices: versionIncrements.map(i => `${i} (${inc(i)})`).concat(['custom'])
+    })
+
+    // 自定义版本号
+    if (release === 'custom') {
+      const result = await prompt({
+        type: 'input',
+        name: 'version',
+        message: 'Input custom version',
+        initial: currentVersion // 给用户提供的一个默认值
+      })
+      // @ts-ignore
+      targetVersion = result.version
+    } else {
+      // 获取到括号中的版本号
+      targetVersion = release.match(/\((.*)\)/)[1]
+    }
+  }
+
+  // 验证版本号是否符合语义化版本规范
+  if (!semver.valid(targetVersion)) {
+    throw new Error(`invalid target version: ${targetVersion}`)
+  }
+
+  // 再次确认要发布的版本号
+  const { yes: confirmRelease } = await prompt({
+    type: 'confirm',
+    name: 'yes',
+    message: `Releasing v${targetVersion}. Confirm?`
+  })
+
+  // false 则直接返回
+  if (!confirmRelease) {
+    return
+  }
+}
+```
+
+main 函数中，首先或获取命令行参数，若没有在命令行参数中指定版本，会有 enquirer 提供交互式的控制台界面供用户选择或自定义版本号。
+
+有了版本号之后，会使用 semver 的 valid 方法校验当前版本号是否符合语义化规范。不符合规范则抛出错误，符合规范后会再次确认版本号，确认之后继续后面的步骤。
+
+### 第二步 - 检查是否通过 CI 测试，是否执行本地测试用例
+这段代码的主要作用是确保在发布新版本之前，CI 已经通过，并且构建状态良好，这可以防止发布有问题的代码版本，并帮助确保发布版本的稳定性和可靠性。
+
+```js
+step('Checking CI status for HEAD...')
+let isCIPassed = true
+try {
+  // 使用 execa 执行 git rev-parse HEAD 命令，获取当前Git仓库的最新提交 SHA
+  const { stdout: sha } = await execa('git', ['rev-parse', 'HEAD'])
+  // 使用 fetch 函数访问 GitHub API ,获取与该 SHA 相关的所有 GitHub Actions 运行的状态信息
+  const res = await fetch(
+    `https://api.github.com/repos/vuejs/core/actions/runs?head_sha=${sha}` +
+      `&status=success&exclude_pull_requests=true`
+  )
+  // 解析 API 返回的 JSON 数据
+  const data = await res.json()
+
+  // 如果存在任何一次运行成功，则认为 CI 已经通过，否则认为没有通过
+  isCIPassed = data.workflow_runs.length > 0
+} catch (e) {
+  // 如果出现任何错误，则认为 CI 没有通过
+  isCIPassed = false
+}
+
+// CI 测试通过，是否跳过本地测试
+if (isCIPassed) {
+  // @ts-ignore
+  const { yes: promptSkipTests } = await prompt({
+    type: 'confirm',
+    name: 'yes',
+    message: `CI for this commit passed. Skip local tests?`
+  })
+  if (promptSkipTests) {
+    skipTests = true
+  }
+}
+
+// 如果 CI 没有通过，需要执行本地的测试用例
+if (!skipTests) {
+  step('\nRunning tests...')
+  if (!isDryRun) {
+    // 如果是真实运行（非空运行），则执行 pnpm test run 命令
+    await run('pnpm', ['test', 'run'])
+  } else {
+    // 空运行则只打印出日志即可
+    console.log(`Skipped (dry run)`)
+  }
+} else {
+  step('Tests skipped.')
+}
+
+```
+
+这一部分的代码，首先使用 execa 库执行了 `git rev-parse HEAD` 命令，该命令用于获取当前代码库最新的提交记录的 SHA-1 校验和。
+
+`rev-parse` 表示解析 Git 对象名的命令
+
+`HEAD` 表示要解析的 Git 对象名，这里指的是当前所在分支的最新提交记录。
+
+```js
+import execa from 'execa'
+
+execa('git', ['rev-parse', 'HEAD']).then(res => {
+  console.log('执行结果。。。。', res)
+})
+
+// 输出：
+// 执行结果。。。。 {
+//   command: 'git rev-parse HEAD',
+//   exitCode: 0,
+//   stdout: '98f1934811d8c8774cd01d18fa36ea3ec68a0a54',
+//   stderr: '',
+//   all: undefined,
+//   failed: false,
+//   timedOut: false,
+//   isCanceled: false,
+//   killed: false
+// }
+```
+
+其次调用 API 查询该 SHA 相关的 GitHub Actions ，若 CI 通过，则可不用在本地执行测试用例，若 CI 没有通过，则需要在本地执行测试用例（`pnpm test run`），测试用例通过才可以执行后续程序。
+
+### 第三步 - 更新所有包的版本号和内部 Vue 相关依赖的版本号
+
+这部分代码的作用是更新所有 Vue3 源码包的版本号，确保他们都使用相同的版本号。
+
+```js
+// update all package versions and inter-dependencies
+step('\nUpdating cross dependencies...')
+updateVersions(targetVersion)
+```
+#### updateVersions 方法
+定义 updateVersions 方法，用于批量更新所有包的版本号。
+
+```js
+function updateVersions(version) {
+  // 1. update root package.json
+  updatePackage(path.resolve(__dirname, '..'), version)
+  // 2. update all packages
+  packages.forEach(p => updatePackage(getPkgRoot(p), version))
+}
+```
+
+#### updatePackage 方法
+定义 updatePackage 方法，用于更新一个包的版本号及其依赖的版本号。
+
+自身 package.json 中 version 字段的修改。
+
+package.json 中 dependencies 中 vue 相关依赖的修改。
+
+package.json 中 peerDependencies 中 vue 相关依赖的修改。
+
+```js
+function updatePackage(pkgRoot, version) {
+  // 获取当前包的 package.json 文件路径
+  const pkgPath = path.resolve(pkgRoot, 'package.json')
+  // 读取当前包的 package.json 文件
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
+  // 更新当前包的版本号为指定的 version
+  pkg.version = version
+  // 更新当前包的 dependencies 和 peerDependencies 字段中的 vue 相关依赖版本为指定的 version
+  updateDeps(pkg, 'dependencies', version)
+  updateDeps(pkg, 'peerDependencies', version)
+  // 将更新后的 package.json 文件写入磁盘
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+}
+```
+执行 `pnpm release --dry` 命令之后，可以看到版本号都已经被更改
+
+![修改版本号](../assets/img/vue-publish-6.png)
+
+
+#### updateDeps 方法
+定义 updateDeps 方法，用于更新一个包的依赖的版本号。
+
+```js
+function updateDeps(pkg, depType, version) {
+  const deps = pkg[depType]
+  // 如果当前包没有指定类型的依赖，则直接返回
+  if (!deps) return
+  // 遍历当前包的依赖列表
+  Object.keys(deps).forEach(dep => {
+    // 如果依赖为 workspace:* 则直接返回
+    if (deps[dep] === 'workspace:*') {
+      return
+    }
+
+    // 如果依赖为 Vue 相关依赖，则将其版本号更新为指定的 version
+    if (
+      dep === 'vue' ||
+      (dep.startsWith('@vue') && packages.includes(dep.replace(/^@vue\//, '')))
+    ) {
+      console.log(
+        chalk.yellow(`${pkg.name} -> ${depType} -> ${dep}@${version}`)
+      )
+      deps[dep] = version
+    }
+  })
+}
+
+```
+
+执行 `pnpm release --dry` 命令之后，可以看到 packages 目录下的各个包中 package.json 中的 dependencies 、 peerDependencies 的依赖版本号也已修改
+
+![依赖版本号](../assets/img/vue-publish-7.png)
+
+![控制台输出版本号](../assets/img/vue-publish-8.png)
+
+
+### 第四步 - 打包编译所有的包
+
+```js
+// build all packages with types
+step('\nBuilding all packages...')
+if (!skipBuild && !isDryRun) {
+  // pnpm build 命令来构建所有包
+  await run('pnpm', ['run', 'build'])
+  step('\nBuilding and testing types...')
+  // pnpm test-dts 命令来构建和测试类型声明文件
+  await run('pnpm', ['test-dts'])
+} else {
+  console.log(`(skipped)`)
+}
+
+```
+
+### 第五步 - 生成 changelog
+
+即，执行 `pnpm run changelog`。可以在 package.json 中看到具体的脚本 `conventional-changelog -p angular -i CHANGELOG.md -s`
+
+```js
+// generate changelog
+step('\nGenerating changelog...')
+await run(`pnpm`, ['run', 'changelog'])
+```
+
+### 第六步 - 更新 pnpm-lock.yaml
+
+即，执行 `pnpm install --prefer-offline` 命令更新 pnpm-lock.yaml 文件。
+
+```js
+// update pnpm-lock.yaml
+step('\nUpdating lockfile...')
+await run(`pnpm`, ['install', '--prefer-offline'])
+```
+
+### 第七步 - 提交代码
+
+首先执行 `git diff` 命令，`{ stdio: 'pipe' }` 指定标准输入输出流的传输方式为流水线传输。
+
+```js
+const { stdout } = await run('git', ['diff'], { stdio: 'pipe' })
+if (stdout) {
+  // 如果有差异，执行 git add -A，git commit -m 'release: 版本号' 
+  step('\nCommitting changes...')
+  await runIfNotDry('git', ['add', '-A'])
+  await runIfNotDry('git', ['commit', '-m', `release: v${targetVersion}`])
+} else {
+  console.log('No changes to commit.')
+}
+```
+
+### 第八步 - 发布包
+
+```js
+// publish packages
+step('\nPublishing packages...')
+for (const pkg of packages) {
+  await publishPackage(pkg, targetVersion, runIfNotDry)
+}
+```
+
+#### publishPackage 方法
+
+```js
+async function publishPackage(pkgName, version, runIfNotDry) {
+  if (skippedPackages.includes(pkgName)) {
+    return
+  }
+  const pkgRoot = getPkgRoot(pkgName)
+  const pkgPath = path.resolve(pkgRoot, 'package.json')
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
+  if (pkg.private) {
+    return
+  }
+
+  let releaseTag = null
+  if (args.tag) {
+    releaseTag = args.tag
+  } else if (version.includes('alpha')) {
+    releaseTag = 'alpha'
+  } else if (version.includes('beta')) {
+    releaseTag = 'beta'
+  } else if (version.includes('rc')) {
+    releaseTag = 'rc'
+  }
+
+  step(`Publishing ${pkgName}...`)
+  try {
+    await runIfNotDry(
+      // note: use of yarn is intentional here as we rely on its publishing
+      // behavior.
+      'yarn',
+      [
+        'publish',
+        '--new-version',
+        version,
+        ...(releaseTag ? ['--tag', releaseTag] : []),
+        '--access',
+        'public'
+      ],
+      {
+        cwd: pkgRoot,
+        stdio: 'pipe'
+      }
+    )
+    console.log(chalk.green(`Successfully published ${pkgName}@${version}`))
+  } catch (e) {
+    if (e.stderr.match(/previously published/)) {
+      console.log(chalk.red(`Skipping already published: ${pkgName}`))
+    } else {
+      throw e
+    }
+  }
+}
+
+```
