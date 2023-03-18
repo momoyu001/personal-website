@@ -1,5 +1,7 @@
 # Vue 是如何发布的
 
+本文基于[Vue 3.2 发布了，那尤雨溪是怎么发布 Vue.js 的？](https://juejin.cn/post/6997943192851054606#heading-27)，按照目前最新的 vue 版本源码来学习纪录。
+
 ## 环境准备
 克隆项目：[vue/core](https://github.com/vuejs/core)(我克隆的时候，是 3.3.0-alpha.4 版本，要求 node 版本在 16.11.0 及以上，使用 pnpm 作为包管理器)
 
@@ -729,6 +731,8 @@ for (const pkg of packages) {
 
 #### publishPackage 方法
 
+该方法将某个指定的包发布到 npm 上。函数内部会读取该包的 package.json 的内容，检查该包是否为私有包，如果是则不会进行发布。
+
 ```js
 async function publishPackage(pkgName, version, runIfNotDry) {
   if (skippedPackages.includes(pkgName)) {
@@ -737,10 +741,12 @@ async function publishPackage(pkgName, version, runIfNotDry) {
   const pkgRoot = getPkgRoot(pkgName)
   const pkgPath = path.resolve(pkgRoot, 'package.json')
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
+  // 如果是私有包就不会进行发布
   if (pkg.private) {
     return
   }
 
+  // 判断发布的标签类型 - releaseTag
   let releaseTag = null
   if (args.tag) {
     releaseTag = args.tag
@@ -754,6 +760,7 @@ async function publishPackage(pkgName, version, runIfNotDry) {
 
   step(`Publishing ${pkgName}...`)
   try {
+    // 这里发布的时候，使用的是 yarn publish 命令
     await runIfNotDry(
       // note: use of yarn is intentional here as we rely on its publishing
       // behavior.
@@ -782,3 +789,52 @@ async function publishPackage(pkgName, version, runIfNotDry) {
 }
 
 ```
+
+在控制台执行 `pnpm release --dry --skipTests` 后，可在控制台看到如下输出：
+
+![发布](../assets/img/vue-publish-9.png)
+
+为什么要使用 `yarn publish` ？`yarn publish` 命令具有以下好处：
+
+- 能够自动解决依赖关系并创建一个干净的发布版本。
+- 可以在一次提交中完成发布的所有步骤，而不是像使用npm时那样需要多次命令。
+- 可以自定义tag，以便在发布alpha，beta和rc版本时更轻松地管理版本号。
+- yarn发布支持访问控制，可以将发布限制为私有或公共。
+- 在一些特殊情况下，使用yarn发布可能比使用npm更可靠，因为yarn的发布逻辑在某些方面与npm不同，例如yarn会自动发布git标签。
+
+### 第九步 - 推送到 GitHub
+
+```js
+// push to GitHub
+step('\nPushing to GitHub...')
+// 打 tag `git tag v${yatgetVersion}`
+await runIfNotDry('git', ['tag', `v${targetVersion}`])
+// 推送 tag `git push origin refs/tags/v${targetVersion}`
+await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
+// 推送到远端 git push
+await runIfNotDry('git', ['push'])
+
+if (isDryRun) {
+  console.log(`\nDry run finished - run git diff to see package changes.`)
+}
+
+if (skippedPackages.length) {
+  console.log(
+    chalk.yellow(
+      `The following packages are skipped and NOT published:\n- ${skippedPackages.join(
+        '\n- '
+      )}`
+    )
+  )
+}
+console.log()
+```
+
+最后我们在控制台看到一下输出,，本次版本发布即完成。
+
+![最终输出](../assets/img/vue-publish-10.png)
+
+## 总结
+总结一下 Vue 的发布流程：
+
+![发布流程](../assets/img/vue-publish-11.png)

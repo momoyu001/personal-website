@@ -78,7 +78,6 @@ export default {
                             ],
                         },
                         { text: 'vue-class-component', link: '/vue/vueClassComponent' },
-                        { text: 'vue是如何发布的', link: '/vue/vue是如何发布的' },
                     ],
                 },
             ],
@@ -88,7 +87,7 @@ export default {
                     items: [],
                 },
             ],
-            '/sourcecode/': [{ text: '源码', items: [] }],
+            '/sourcecode/': [{ text: '源码', items: [{ text: 'vue是如何发布的', link: '/sourcecode/vue是如何发布的' }] }],
             '/daily/': [{ text: '日常随笔', items: [] }],
             '/other/': [
                 {
