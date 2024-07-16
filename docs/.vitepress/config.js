@@ -32,6 +32,12 @@ export default {
               ],
             },
             { text: "面试整理-按模块分类", link: "/interview/module" },
+            {
+              text: "2024面试准备",
+              collapsible: true,
+              collapsed: true,
+              items: [{ text: "HTML", link: "/interview/2024interview/html" }],
+            },
           ],
         },
       ],
