@@ -392,9 +392,17 @@ dragenter 和 dragover 事件的默认行为是拒绝接受任何被拖放的元
 
 ### 本地存储
 
-#### localStorage
+两个接口：
 
-#### sessionStorage
+- localStorage：域内安全，永久保存。即客户端或浏览器中来自同一域名的所有页面都可访问 localStorage 数据且数据除了删除否则永久保存，但客户端或浏览器之间的数据相互独立。
+- sessionStorage：会话控制、短期保存。会话概念与服务器端的 session 概念相似，短期保存指窗口或浏览器或客户端关闭后自动消除数据。
+
+四个方法：
+
+- setItem：存储数据
+- removeItem：删除数据
+- getItem：获取数据
+- clear：清空数据
 
 ## 4、对 HTML 语义化的理解
 
