@@ -36,7 +36,10 @@ export default {
               text: "2024面试准备",
               collapsible: true,
               collapsed: true,
-              items: [{ text: "HTML", link: "/interview/2024interview/html" }],
+              items: [
+                { text: "HTML", link: "/interview/2024interview/html" },
+                { text: "CSS", link: "/interview/2024interview/css" },
+              ],
             },
           ],
         },
