@@ -40,6 +40,10 @@ export default {
                 { text: "HTML", link: "/interview/2024interview/html" },
                 { text: "CSS", link: "/interview/2024interview/css" },
                 {
+                  text: "Javascript",
+                  link: "/interview/2024interview/javascript",
+                },
+                {
                   text: "项目难点记录",
                   link: "/interview/2024interview/项目难点记录",
                 },
