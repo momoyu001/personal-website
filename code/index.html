@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .text-shadow {
+        text-shadow: 10px 10px 1px #ff0000, -3px -3px 2px #ff00ff;
+      }
+
+      .box-shadow {
+        width: 200px;
+        height: 200px;
+        margin-top: 200px;
+        box-shadow: 5px 5px 10px 0px #ff0000;
+        box-shadow: 0px 10px 3px 0px #ff0000;
+      }
+
+      .box {
+        width: 200px;
+        height: 200px;
+        margin: 60px;
+        float: left;
+        color: white;
+        background-color: #655;
+      }
+      .cloud {
+        width: 60px;
+        height: 50px;
+        margin: 40px;
+        background-color: currentColor;
+        border-radius: 50%;
+        /* box-shadow: 100px 0px 0px -10px lightcoral, 40px 0px lightcyan,
+          70px 15px lightsalmon, 30px 20px 0px -10px lightseagreen,
+          70px -15px lightskyblue, 30px -30px lightgoldenrodyellow; */
+        box-shadow: 20px 0 0 -10px #ff0000, 40px 20px 0px 10px #ff00ff;
+      }
+
+      .multiple-border {
+        width: 400px;
+        height: 400px;
+        margin: 50px;
+        border: 1px solid #ff0000;
+        clear: both;
+        box-shadow: 0px 0px 0px 10px #ff00ff;
+      }
+
+      .parent {
+        width: 300px;
+        height: 300px;
+        padding: 100px;
+        margin: 100px;
+        background: #e0e0e0;
+      }
+
+      .object {
+        width: 200px;
+        height: 200px;
+        border-radius: 50px;
+        background: #e0e0e0;
+        /* border: 1px solid #ff0000; */
+        box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+      }
+
+      .flex-container {
+        height: 800px;
+        border: 1px solid #ff00ff;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        align-content: space-around;
+      }
+
+      .flex-item {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #ff0000;
+        margin: 10px;
+      }
+
+      .margin-test {
+        width: 400px;
+        height: 400px;
+        border: 1px solid #ff00ff;
+        margin-top: 10px;
+      }
+
+      .margin-test-child {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #00ff00;
+        margin-top: 40px;
+      }
+
+      .sticky {
+        width: 1200px;
+        height: 50px;
+        background-color: aqua;
+        position: sticky;
+        top: 40px;
+      }
+
+      .triangle {
+        width: 0;
+        height: 0;
+        border: 200px solid #ff0000;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+      }
+
+      .half-one-pixel {
+        margin: 40px;
+        width: 200px;
+        height: 1px;
+        transform: scaleY(0.5);
+        background-color: #655;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="text-shadow">测试 text-shadow 样式</p>
+
+    <div class="triangle"></div>
+
+    <div class="box-shadow"></div>
+
+    <div class="sticky"></div>
+
+    <div class="half-one-pixel"></div>
+
+    <div class="box">
+      <div class="cloud"></div>
+    </div>
+
+    <div class="multiple-border"></div>
+
+    <div class="parent">
+      <div class="object"></div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+      <div class="flex-item"></div>
+    </div>
+
+    <div class="margin-test">
+      <div class="margin-test-child"></div>
+    </div>
+  </body>
+</html>
