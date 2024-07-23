@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as l,d as a}from"./app.fc8d6d98.js";const F=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"javascript/JS笔记.md"}'),p={name:"javascript/JS笔记.md"},o=a("",155),e=[o];function t(c,r,i,C,A,y){return l(),n("div",null,e)}const u=s(p,[["render",t]]);export{F as __pageData,u as default};
